@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <title>3DLabs - Filament Wizard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/styles.css" />
+  <!-- IMPORTANT: this page lives in /tools, so go up one level for site CSS -->
+  <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
   <header class="top-bar">
@@ -16,38 +17,38 @@
       </div>
     </div>
 
-    <nav class="top-bar-right top-nav">
-      <a class="nav-link" href="/index.html">Home</a>
-      <a class="nav-link" href="/shop.html">Shop</a>
-      <a class="nav-link" href="/gallery.html">Gallery</a>
-      <a class="nav-link" href="/social.html">Social</a>
-      <a class="nav-link" href="/contact.html">Contact</a>
-      <a class="nav-link nav-cta nav-active" href="/tools/filament-wizard.html">Filament Wizard</a>
-    </nav>
+    <div class="top-bar-right top-nav">
+      <!-- IMPORTANT: from /tools, go up one level for the main pages -->
+      <a class="nav-link" href="../index.html">Home</a>
+      <a class="nav-link" href="../shop.html">Shop</a>
+      <a class="nav-link" href="../gallery.html">Gallery</a>
+      <a class="nav-link" href="../social.html">Social</a>
+      <a class="nav-link" href="../contact.html">Contact</a>
+      <a class="nav-link nav-active nav-cta" href="filament-wizard.html">Filament Wizard</a>
+    </div>
   </header>
 
   <main class="page">
-    <!-- Your existing Filament Wizard UI is driven by the JS files below.
-         This page keeps your styling intact by loading CSS from /styles.css
-         and JS from /tools/. -->
-
-    <section class="card">
+    <section class="hero-card">
+      <div class="hero-eyebrow">FILAMENT WIZARD</div>
       <h1>Filament Wizard</h1>
-      <p class="muted">Use-case driven filament recommendations (strength, heat, UV, flexibility, etc.).</p>
-
-      <!-- If your original wizard markup is more extensive, keep it here.
-           I am leaving your functional wiring to the JS files you already have. -->
-      <div id="app"></div>
+      <p class="hero-subtitle">
+        Use-case driven filament recommendations (strength, heat, UV, flexibility, etc.).
+      </p>
     </section>
 
-    <footer class="footer muted">
-      <div>3DLabs • Filament Wizard</div>
-    </footer>
+    <section class="card">
+      <div id="app"></div>
+    </section>
   </main>
 
-  <!-- IMPORTANT: these must be absolute so they work from /tools/ -->
-  <script src="/tools/filaments.js"></script>
-  <script src="/tools/logic.js"></script>
-  <script src="/tools/wiring.js"></script>
+  <footer class="footer">
+    <div>3DLabs • Filament Wizard</div>
+  </footer>
+
+  <!-- These files are in the SAME folder as this HTML, so keep them relative -->
+  <script src="filaments.js"></script>
+  <script src="logic.js"></script>
+  <script src="wiring.js"></script>
 </body>
 </html>

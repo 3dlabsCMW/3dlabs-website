@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>3DLabs - Shop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="top-bar">
@@ -15,26 +15,30 @@
         <span class="brand-subtitle">Shop</span>
       </div>
     </div>
-
-    <nav class="top-bar-right top-nav">
-      <a class="nav-link" href="/index.html">Home</a>
-      <a class="nav-link nav-active" href="/shop.html">Shop</a>
-      <a class="nav-link" href="/gallery.html">Gallery</a>
-      <a class="nav-link" href="/social.html">Social</a>
-      <a class="nav-link" href="/contact.html">Contact</a>
-      <a class="nav-link nav-cta" href="/tools/filament-wizard.html">Filament Wizard</a>
-    </nav>
+    <div class="top-bar-right top-nav">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link nav-active" href="shop.html">Shop</a>
+      <a class="nav-link" href="gallery.html">Gallery</a>
+      <a class="nav-link" href="social.html">Social</a>
+      <a class="nav-link" href="contact.html">Contact</a>
+      <a class="nav-link nav-cta" href="tools/filament-wizard.html">Filament Wizard</a>
+    </div>
   </header>
 
   <main class="page">
-    <section class="card">
-      <h1>Shop</h1>
-      <p class="muted">Featured products, Etsy listings, and popular categories will live here.</p>
+    <section class="hero-card">
+      <div class="hero-eyebrow">SHOP</div>
+      <h1>Featured products</h1>
+      <p class="hero-subtitle">Etsy listings + in-house prints. Full shop page coming soon.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="contact.html">Request a custom order</a>
+        <a class="btn btn-ghost" href="tools/filament-wizard.html">Pick material with Filament Wizard</a>
+      </div>
     </section>
-
-    <footer class="footer muted">
-      <div>3DLabs • Shop</div>
-    </footer>
   </main>
+
+  <footer class="footer">
+    <div>3DLabs • Shop</div>
+  </footer>
 </body>
 </html>
