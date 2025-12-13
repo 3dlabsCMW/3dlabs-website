@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3DLabs</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <header class="top-bar">
@@ -12,65 +12,68 @@
       <div class="logo-circle">3D</div>
       <div class="brand-text">
         <span class="brand-name">3DLabs</span>
-        <span class="brand-subtitle">Print Lab • Shop • Tools</span>
+        <span class="brand-subtitle">Print Lab</span>
       </div>
     </div>
 
     <div class="top-bar-right top-nav">
-      <a class="nav-link nav-active" href="index.html">Home</a>
-      <a class="nav-link" href="shop.html">Shop</a>
-      <a class="nav-link" href="gallery.html">Gallery</a>
-      <a class="nav-link" href="social.html">Social</a>
-      <a class="nav-link" href="contact.html">Contact</a>
-      <a class="nav-link nav-cta" href="tools/filament-wizard.html">Filament Wizard</a>
+      <a class="nav-link nav-active" href="/index.html">Home</a>
+      <a class="nav-link" href="/shop.html">Shop</a>
+      <a class="nav-link" href="/gallery.html">Gallery</a>
+      <a class="nav-link" href="/social.html">Social</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+      <a class="nav-link nav-cta" href="/tools/filament-wizard.html">Filament Wizard</a>
     </div>
   </header>
 
   <main class="page">
-    <section class="hero-card">
-      <div class="hero-eyebrow">3DLABS</div>
-      <h1>3D printing done properly.</h1>
-      <p class="hero-subtitle">
-        Custom prints, functional parts, and in-house tools like Filament Wizard for smarter material selection.
-      </p>
-
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="shop.html">Browse the shop</a>
-        <a class="btn btn-ghost" href="gallery.html">View gallery</a>
-        <a class="btn btn-ghost" href="tools/filament-wizard.html">Open Filament Wizard</a>
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-eyebrow">3DLabs</div>
+        <h1>3D printing done properly.</h1>
+        <p>
+          Custom prints, functional parts, and in-house tools like Filament Wizard for smarter material selection.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/shop.html">Browse the shop</a>
+          <a class="btn" href="/gallery.html">View gallery</a>
+          <a class="btn" href="/tools/filament-wizard.html">Open Filament Wizard</a>
+        </div>
       </div>
     </section>
 
     <section class="grid-3">
-      <div class="card">
-        <div class="card-title">Shop</div>
-        <div class="card-desc">Featured products, Etsy listings, and popular print categories.</div>
-        <a class="btn btn-small" href="shop.html">Open shop</a>
-      </div>
+      <article class="panel">
+        <h3>Shop</h3>
+        <p>Featured products, Etsy listings, and popular print categories.</p>
+        <a class="btn btn-small" href="/shop.html">Open shop</a>
+      </article>
 
-      <div class="card">
-        <div class="card-title">Gallery</div>
-        <div class="card-desc">Real prints, finishes, and examples to set expectations.</div>
-        <a class="btn btn-small" href="gallery.html">View gallery</a>
-      </div>
+      <article class="panel">
+        <h3>Gallery</h3>
+        <p>Real prints, finishes, and examples to set expectations.</p>
+        <a class="btn btn-small" href="/gallery.html">View gallery</a>
+      </article>
 
-      <div class="card">
-        <div class="card-title">Tools</div>
-        <div class="card-desc">Filament Wizard + calculators, guides, and print-prep tools.</div>
-        <a class="btn btn-small" href="tools/filament-wizard.html">Open tools</a>
-      </div>
+      <article class="panel">
+        <h3>Tools</h3>
+        <p>Filament Wizard + calculators, guides, and print-prep tools.</p>
+        <a class="btn btn-small" href="/tools/filament-wizard.html">Open tools</a>
+      </article>
     </section>
 
-    <section class="card callout">
-      <div class="callout-title">Need a quote or custom part?</div>
-      <div class="callout-desc">Send dimensions, material preferences, and use case—then we’ll recommend the right filament and pricing.</div>
-      <a class="btn btn-primary" href="contact.html">Request a quote</a>
+    <section class="panel wide">
+      <h3>Need a quote or custom part?</h3>
+      <p>Send dimensions, material preferences, and use case—then we’ll recommend the right filament and pricing.</p>
+      <a class="btn btn-primary btn-small" href="/contact.html">Request a quote</a>
     </section>
+
+    <footer class="footer">
+      <div>3DLabs • Site v1 • Dec 2025</div>
+      <div class="footer-note">
+        Tools and pricing are estimates. Final material and process selection depends on part requirements and printer capability.
+      </div>
+    </footer>
   </main>
-
-  <footer class="footer">
-    <div>3DLabs • Site v1 • Dec 2025</div>
-    <div class="footer-muted">Tools and pricing are estimates. Final material and process selection depends on part requirements and printer capability.</div>
-  </footer>
 </body>
 </html>
