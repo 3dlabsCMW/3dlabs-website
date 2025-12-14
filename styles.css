@@ -30,7 +30,6 @@ body{
   display:flex;
   flex-direction:column;
 }
-
 a{color:inherit;text-decoration:none}
 .hidden{display:none !important}
 
@@ -126,17 +125,50 @@ select option{background:#0f1624;color:#f1f5f9}
 .wizard-shell{display:grid;grid-template-columns:410px 1fr;gap:14px;align-items:start}
 @media (max-width:980px){ .wizard-shell{grid-template-columns:1fr} }
 
-/* IMPORTANT: Left card spacing back to normal (no tight grid) */
+/* =========================
+   LEFT CARD: more spacing + cleaner button blocks
+   ========================= */
+
+/* Space out each field row */
+.wizard-left .field,
+.wizard-left .form-row,
+.wizard-left .control-group{
+  margin-bottom:14px;
+}
+.wizard-left label{margin-bottom:8px}
+
+/* Add breathing room between major groups */
+.wizard-left{
+  padding-bottom:4px;
+}
+.wizard-left .wizard-title{margin-bottom:10px}
+
+/* Notes box a bit taller and separated */
+.wizard-left textarea{
+  min-height:140px;
+}
+
+/* Button area: clean stacked sections */
 .wizard-left .button-row{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:10px;
+}
+
+/* Make each “row” inside the button area look intentional */
+.wizard-left .button-row .row{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
 }
-.wizard-left .button-row button{min-width:160px}
+.wizard-left .button-row button{
+  flex:1 1 160px;
+}
 
 /* View chips */
 .view-label{display:none !important;}
-.chip-row{display:flex;gap:10px;flex-wrap:wrap}
+.chip-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 .chip{
   border-radius:999px;padding:10px 12px;min-height:38px;font-size:12px;font-weight:900;
   border:1px solid rgba(255,255,255,.12);
@@ -146,11 +178,27 @@ select option{background:#0f1624;color:#f1f5f9}
 }
 .chip-active{background:rgba(255,106,0,.16);border-color:rgba(255,106,0,.42);color:rgba(241,245,249,.95)}
 
-/* Quick hints row */
-#resultsQuickHints{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 6px}
+/* If your HTML doesn’t have .row wrappers, still improve spacing */
+.wizard-left .button-row > button{width:100%}
 
-/* Sort + Filters alignment */
-.results-header-right, .actions-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+/* =========================
+   RESULTS HEADER: force sort+filters top-right
+   ========================= */
+
+.results-header{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.results-header-right, .actions-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-left:auto;          /* key: push to top-right */
+  justify-content:flex-end;
+}
 .sort-label{display:none !important;}
 .sort-select, #sortBy{
   appearance:none;border-radius:999px;border:1px solid rgba(255,255,255,.12);
@@ -165,7 +213,7 @@ select option{background:#0f1624;color:#f1f5f9}
   font-weight:900;
 }
 
-/* Filters dropdown (now appended to body + fixed positioning in JS) */
+/* Filters dropdown */
 .filters-dropdown{
   display:none;
   width:280px;
@@ -177,6 +225,9 @@ select option{background:#0f1624;color:#f1f5f9}
 }
 .filters-dropdown.show{display:block}
 
+/* Quick hints row */
+#resultsQuickHints{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 6px}
+
 /* Results box */
 .results-grid, #results{
   margin-top:10px;border-radius:var(--radius);border:1px solid var(--border);
@@ -184,7 +235,10 @@ select option{background:#0f1624;color:#f1f5f9}
   overflow:auto;min-height:calc(100vh - 320px);max-height:calc(100vh - 320px);
 }
 
-/* ===== Filament cards ONLY: tighter + clustered ===== */
+/* =========================
+   FILAMENT CARDS: tight + avoid collisions
+   ========================= */
+
 .card-result{
   position:relative;
   border-radius:18px;
@@ -195,7 +249,7 @@ select option{background:#0f1624;color:#f1f5f9}
   margin:10px 0;
 }
 
-/* Title row: icon + name aligned and bold */
+/* Title row */
 .card-result-title{
   display:flex;
   align-items:center;
@@ -203,23 +257,20 @@ select option{background:#0f1624;color:#f1f5f9}
   font-weight:950;
 }
 
-/* Make the ACTUAL icon bigger.
-   If your icon is an emoji/text, font-size drives it.
-   If it’s an <img>, we set width/height too. */
+/* Make the ACTUAL icon bigger (not just container) */
 .filament-icon{
   width:34px;height:34px;
   display:grid;place-items:center;
   border-radius:12px;
   background:rgba(255,255,255,.04);
   border:1px solid rgba(255,255,255,.10);
-  font-size:22px; /* emoji/text icon size */
+  font-size:24px; /* emoji/text size */
   line-height:1;
 }
-.filament-icon img{width:22px;height:22px;display:block}
-.filament-icon svg{width:22px;height:22px;display:block}
+.filament-icon img{width:24px;height:24px;display:block}
+.filament-icon svg{width:24px;height:24px;display:block}
 
-/* Score + Copy pinned top-right corner */
-.card-result.has-score-stack{ padding-top:12px; }
+/* Score + Copy pinned top-right */
 .score-stack{
   position:absolute;
   top:12px;
@@ -228,6 +279,7 @@ select option{background:#0f1624;color:#f1f5f9}
   flex-direction:column;
   align-items:flex-end;
   gap:8px;
+  z-index:3;
 }
 .card-result-score{font-weight:950;color:rgba(241,245,249,.92)}
 .btn-copy-profile.copy-under-score{
@@ -240,26 +292,28 @@ select option{background:#0f1624;color:#f1f5f9}
   cursor:pointer;
 }
 
-/* Floating Print Profile in dead space (do NOT reflow the text) */
+/* Floating Print Profile: pushed BELOW the score/copy area so it never conflicts */
 .card-result.has-profile-float{
-  padding-right: 360px; /* reserve space so long paragraphs don’t collide */
-}
-@media (max-width: 1100px){
-  .card-result.has-profile-float{ padding-right: 12px; }
-  .profile-float{ position:static; margin:10px 0 0; width:auto; }
+  padding-right: 360px; /* keep text away from the float */
 }
 .profile-float{
   position:absolute;
-  top:56px;        /* below title area; adjust later if you want */
+  top:92px;            /* moved down to clear score+copy */
   right:12px;
   width:332px;
   border-radius:16px;
   border:1px solid rgba(255,255,255,.10);
   background:rgba(255,255,255,.03);
   padding:12px;
+  z-index:2;
 }
 .profile-float .profile-title{margin:0 0 8px 0;font-weight:950}
 .profile-float .profile-list{margin:0 0 0 18px;color:rgba(241,245,249,.90)}
+
+@media (max-width: 1100px){
+  .card-result.has-profile-float{ padding-right: 12px; }
+  .profile-float{ position:static; margin:10px 0 0; width:auto; }
+}
 
 /* Inline count */
 .inline-meta-count #resultsCount{display:inline-block !important;font-weight:950;color:rgba(241,245,249,.90)}

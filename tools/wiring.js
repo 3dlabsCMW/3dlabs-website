@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
     el.classList.toggle("js-status-warn", !ok);
   }
 
-  // Core presence check
   const coreOk =
     typeof FILAMENTS !== "undefined" &&
     typeof runWizard === "function" &&
@@ -18,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setJsStatus(coreOk, coreOk ? "JS: OK" : "JS: missing");
 
-  // ---------- Move resultsCount next to “Filters applied” ----------
   function moveCountInline() {
     const modeLine = $("resultsModeLine");
     const countEl = $("resultsCount");
@@ -42,19 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
     mo.observe(modeLine, { childList: true, subtree: true, characterData: true });
   }
 
-  // ---------- Card Enhancements ----------
   function enhanceCard(card) {
     if (!card || card.dataset.enhanced === "1") return;
 
-    const header = card.querySelector(".card-result-header");
     const score = card.querySelector(".card-result-score");
     const copyBtn = card.querySelector(".btn-copy-profile");
     const body = card.querySelector(".card-result-body");
     const profileTitle = card.querySelector(".profile-title");
     const profileList = card.querySelector(".profile-list");
 
-    // 1) Force Score + Copy into a top-right stack
-    if (header && score && copyBtn) {
+    if (score && copyBtn) {
       let stack = card.querySelector(".score-stack");
       if (!stack) {
         stack = document.createElement("div");
@@ -67,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.add("has-score-stack");
     }
 
-    // 2) Floating print profile panel (dead space)
     if (body && profileTitle && profileList) {
       let floatPanel = card.querySelector(".profile-float");
       if (!floatPanel) {
@@ -94,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ro.observe(results, { childList: true, subtree: true });
   }
 
-  // ---------- Helpers ----------
   const on = (id, ev, fn) => {
     const el = $(id);
     if (!el) return;
@@ -107,17 +100,15 @@ document.addEventListener("DOMContentLoaded", () => {
   on("runBtn", "click", () => typeof runWizard === "function" && runWizard());
   on("resetBtn", "click", () => typeof resetWizard === "function" && resetWizard());
   on("openLibraryBtn", "click", () => typeof renderAllFilaments === "function" && renderAllFilaments());
-
   on("viewTop3", "click", () => typeof setViewMode === "function" && setViewMode("top3"));
   on("viewAll", "click", () => typeof setViewMode === "function" && setViewMode("all"));
-
   on("sortBy", "change", (e) => {
     if (typeof sortBy === "undefined") return;
     sortBy = e.target.value;
     if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
   });
 
-  // ---------- Filters dropdown: FIXED POSITION so it never gets clipped ----------
+  // Filters dropdown: fixed + appended to body so it never clips
   const filtersBtn = $("filtersBtn");
   const filtersDropdown = $("filtersDropdown");
   let filtersOpen = false;
@@ -126,8 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!filtersBtn || !filtersDropdown) return;
     const r = filtersBtn.getBoundingClientRect();
     const width = filtersDropdown.offsetWidth || 280;
-
-    // Place below the button, right-aligned to it
     filtersDropdown.style.position = "fixed";
     filtersDropdown.style.top = `${Math.round(r.bottom + 10)}px`;
     filtersDropdown.style.left = `${Math.round(r.right - width)}px`;
@@ -135,20 +124,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (filtersBtn && filtersDropdown) {
-    // Ensure it’s not trapped by any parent stacking context
     document.body.appendChild(filtersDropdown);
 
     filtersBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       filtersOpen = !filtersOpen;
-
       if (filtersOpen) {
         filtersDropdown.classList.add("show");
-        // Wait a tick so width is measurable
-        requestAnimationFrame(() => {
-          positionFiltersDropdown();
-        });
+        requestAnimationFrame(() => positionFiltersDropdown());
       } else {
         filtersDropdown.classList.remove("show");
       }
@@ -171,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
   }
 
-  // Keep existing filter logic
   const filterHideHard = $("filterHideHard");
   if (filterHideHard) {
     filterHideHard.addEventListener("change", () => {
