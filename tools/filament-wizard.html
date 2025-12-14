@@ -9,28 +9,28 @@
 
 <body>
   <header class="top-bar">
-  <div class="top-bar-inner">
-    <div class="top-bar-left">
-      <div class="logo-circle">3D</div>
-      <div class="brand-text">
-        <span class="brand-name">3DLabs</span>
-        <span class="brand-subtitle">Filament Wizard</span>
+    <div class="top-bar-inner">
+      <div class="top-bar-left">
+        <div class="logo-circle">3D</div>
+        <div class="brand-text">
+          <span class="brand-name">3DLabs</span>
+          <span class="brand-subtitle">Filament Wizard</span>
+        </div>
+      </div>
+
+      <div class="top-bar-right top-nav">
+        <a class="nav-link" href="/index.html">Home</a>
+        <a class="nav-link" href="/shop.html">Shop</a>
+        <a class="nav-link" href="/gallery.html">Gallery</a>
+        <a class="nav-link" href="/social.html">Social</a>
+        <a class="nav-link" href="/contact.html">Contact</a>
+        <a class="nav-link nav-active nav-cta" href="/tools/filament-wizard.html">Filament Wizard</a>
       </div>
     </div>
+  </header>
 
-    <div class="top-bar-right top-nav">
-      <a class="nav-link" href="/index.html">Home</a>
-      <a class="nav-link" href="/shop.html">Shop</a>
-      <a class="nav-link" href="/gallery.html">Gallery</a>
-      <a class="nav-link" href="/social.html">Social</a>
-      <a class="nav-link" href="/contact.html">Contact</a>
-      <a class="nav-link nav-active nav-cta" href="/tools/filament-wizard.html">Filament Wizard</a>
-    </div>
-  </div>
-</header>
-
-  <main class="page">
-    <section class="hero-card">
+  <main class="page tool-page">
+    <section class="hero-card tool-hero">
       <div class="hero-eyebrow">FILAMENT WIZARD</div>
       <h1>Filament Wizard</h1>
       <p class="hero-subtitle">
@@ -39,8 +39,8 @@
     </section>
 
     <!-- MAIN APP -->
-    <section id="mainApp" class="card">
-      <div class="wizard-shell">
+    <section id="mainApp" class="card tool-card">
+      <div class="wizard-shell wizard-shell-xl">
         <!-- LEFT: Inputs -->
         <div class="wizard-left">
           <div class="wizard-title">Your part</div>
@@ -133,31 +133,31 @@
           </div>
 
           <div class="button-row">
-            <button id="runBtn" class="btn-primary">Find filaments</button>
-            <button id="resetBtn" class="btn-ghost">Reset</button>
+            <button id="runBtn" class="btn-primary" type="button">Find filaments</button>
+            <button id="resetBtn" class="btn-ghost" type="button">Reset</button>
           </div>
 
           <div class="button-row">
-            <button id="openLibraryBtn" class="btn-ghost">View all filaments</button>
+            <button id="openLibraryBtn" class="btn-ghost" type="button">View all filaments</button>
           </div>
 
           <div class="button-row">
-            <button id="openCalculatorBtn" class="btn-ghost">Pricing calculator</button>
-            <button id="feedbackBtn" class="btn-ghost">Feedback</button>
+            <button id="openCalculatorBtn" class="btn-ghost" type="button">Pricing calculator</button>
+            <button id="feedbackBtn" class="btn-ghost" type="button">Feedback</button>
           </div>
 
           <div class="view-mode">
             <div class="view-label">View</div>
             <div class="chip-row">
-              <button id="viewTop3" class="chip chip-active">Top 3</button>
-              <button id="viewAll" class="chip">All matches</button>
+              <button id="viewTop3" class="chip chip-active" type="button">Top 3</button>
+              <button id="viewAll" class="chip" type="button">All matches</button>
             </div>
           </div>
         </div>
 
         <!-- RIGHT: Results -->
         <div class="wizard-right">
-          <div class="results-header">
+          <div class="results-header results-header-sticky">
             <div class="results-header-left">
               <div id="resultsTitle" class="results-title">Recommendations</div>
               <div id="subtitle" class="results-subtitle">
@@ -179,7 +179,7 @@
               </div>
 
               <div class="filters-wrap">
-                <button id="filtersBtn" class="btn-ghost filters-btn">
+                <button id="filtersBtn" class="btn-ghost filters-btn" type="button">
                   <span id="filtersBtnLabel">Filters</span>
                 </button>
 
@@ -208,7 +208,7 @@
                   </div>
 
                   <div class="filters-actions">
-                    <button id="clearFiltersBtn" class="btn-ghost">Clear filters</button>
+                    <button id="clearFiltersBtn" class="btn-ghost" type="button">Clear filters</button>
                   </div>
                 </div>
               </div>
@@ -219,7 +219,7 @@
 
           <div id="resultsQuickHints" class="results-hints"></div>
 
-          <div id="results" class="results-grid">
+          <div id="results" class="results-grid results-grid-xl">
             <div class="result-empty">
               No results yet.<br /><br />
               Tell the wizard about your part and click <b>Find filaments</b> to see recommendations.
@@ -230,15 +230,15 @@
     </section>
 
     <!-- CALCULATOR SCREEN -->
-    <section id="calculatorScreen" class="card hidden">
+    <section id="calculatorScreen" class="card hidden tool-card">
       <div class="calc-header">
         <div>
           <div class="calc-title">Pricing calculator</div>
           <div class="calc-subtitle">Estimate base cost + markup for a print.</div>
         </div>
         <div class="calc-header-actions">
-          <button id="calcOpenLibraryBtn" class="btn-ghost">View all filaments</button>
-          <button id="calculatorBackBtn" class="btn-ghost">Back to wizard</button>
+          <button id="calcOpenLibraryBtn" class="btn-ghost" type="button">View all filaments</button>
+          <button id="calculatorBackBtn" class="btn-ghost" type="button">Back to wizard</button>
         </div>
       </div>
 
@@ -304,8 +304,8 @@
           </div>
 
           <div class="button-row">
-            <button id="calcRunBtn" class="btn-primary">Calculate</button>
-            <button id="calcResetBtn" class="btn-ghost">Reset</button>
+            <button id="calcRunBtn" class="btn-primary" type="button">Calculate</button>
+            <button id="calcResetBtn" class="btn-ghost" type="button">Reset</button>
           </div>
         </div>
 
@@ -319,19 +319,17 @@
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer tool-footer">
     <div>3DLabs • Filament Wizard</div>
   </footer>
 
-  <!-- Toast (used by showToast()) -->
   <div id="toast" class="toast">
     <div id="toastText" class="toast-text"></div>
   </div>
 
-  <!-- JS (absolute paths so it works from anywhere) -->
+  <!-- JS (absolute paths; required for /tools/ rewrite URLs) -->
   <script src="/filaments.js"></script>
   <script src="/logic.js"></script>
   <script src="/wiring.js"></script>
-
 </body>
 </html>
