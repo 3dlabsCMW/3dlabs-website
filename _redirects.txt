@@ -1,6 +1,4 @@
 # Clean URLs -> HTML files
-/                        /index.html                     200
-/index                   /index.html                     200
 /shop                    /shop.html                      200
 /gallery                 /gallery.html                   200
 /social                  /social.html                    200
