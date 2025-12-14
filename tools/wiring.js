@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setJsStatus(coreOk, coreOk ? "JS: OK" : "JS: missing");
 
+  // Move resultsCount inline next to "Filters applied"
   function moveCountInline() {
     const modeLine = $("resultsModeLine");
     const countEl = $("resultsCount");
@@ -32,14 +33,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     modeLine.appendChild(wrap);
   }
-
   moveCountInline();
+
   const modeLine = $("resultsModeLine");
   if (modeLine) {
     const mo = new MutationObserver(() => moveCountInline());
     mo.observe(modeLine, { childList: true, subtree: true, characterData: true });
   }
 
+  // Remove the header line that starts with "Part:"
+  function hidePartLine() {
+    const right = document.querySelector(".wizard-right");
+    const results = $("results");
+    if (!right) return;
+
+    // Only search in the header area (exclude actual result cards container)
+    const searchRoot = right.cloneNode(false);
+    // safer approach: query candidate lines near the header
+    const candidates = right.querySelectorAll("p, div, span");
+    candidates.forEach((el) => {
+      if (!el || !el.textContent) return;
+      if (results && results.contains(el)) return; // don't touch cards
+
+      const t = el.textContent.trim();
+      if (t.startsWith("Part:")) {
+        el.style.display = "none";
+      }
+    });
+  }
+  hidePartLine();
+
+  // Enhance filament cards (score/copy pinned, profile float)
   function enhanceCard(card) {
     if (!card || card.dataset.enhanced === "1") return;
 
@@ -84,10 +108,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const results = $("results");
   if (results) {
     enhanceAllCards();
-    const ro = new MutationObserver(() => enhanceAllCards());
+    const ro = new MutationObserver(() => {
+      enhanceAllCards();
+      hidePartLine();
+    });
     ro.observe(results, { childList: true, subtree: true });
   }
 
+  // Button bindings
   const on = (id, ev, fn) => {
     const el = $(id);
     if (!el) return;
@@ -102,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
   on("openLibraryBtn", "click", () => typeof renderAllFilaments === "function" && renderAllFilaments());
   on("viewTop3", "click", () => typeof setViewMode === "function" && setViewMode("top3"));
   on("viewAll", "click", () => typeof setViewMode === "function" && setViewMode("all"));
+
   on("sortBy", "change", (e) => {
     if (typeof sortBy === "undefined") return;
     sortBy = e.target.value;
@@ -150,11 +179,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", () => {
       if (filtersOpen) positionFiltersDropdown();
     });
-    window.addEventListener("scroll", () => {
-      if (filtersOpen) positionFiltersDropdown();
-    }, { passive: true });
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (filtersOpen) positionFiltersDropdown();
+      },
+      { passive: true }
+    );
   }
 
+  // Filter logic
   const filterHideHard = $("filterHideHard");
   if (filterHideHard) {
     filterHideHard.addEventListener("change", () => {
