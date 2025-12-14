@@ -2,8 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const $ = (id) => document.getElementById(id);
 
   function setJsStatus(ok, msg) {
+    // If the element is missing, do nothing (no breaking).
     const el = $("jsStatus");
     if (!el) return;
+
     el.textContent = msg;
     el.classList.toggle("js-status-ok", !!ok);
     el.classList.toggle("js-status-warn", !ok);
@@ -18,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Global error visibility (prevents “nothing happens”)
+  // Surface JS errors so it never feels "dead"
   window.addEventListener("error", (e) => {
     setJsStatus(false, "JS: error");
     toast("JS error: " + (e?.message || "unknown"));
@@ -29,42 +31,54 @@ document.addEventListener("DOMContentLoaded", () => {
     toast("JS promise error: " + (e?.reason?.message || "unknown"));
   });
 
-  // Verify required globals exist (means scripts loaded correctly)
-  const ok =
+  // --- Core function presence (keep this minimal)
+  // If buttons work, these must exist.
+  const coreOk =
     typeof FILAMENTS !== "undefined" &&
     typeof runWizard === "function" &&
     typeof resetWizard === "function" &&
-    typeof renderAllFilaments === "function" &&
-    typeof runCalculator === "function" &&
-    typeof resetCalculator === "function";
+    typeof renderAllFilaments === "function";
 
-  if (ok) setJsStatus(true, "JS: OK");
-  else {
+  // Optional features (do not block "OK" status)
+  const calcOk =
+    typeof runCalculator === "function" &&
+    typeof resetCalculator === "function" &&
+    typeof updateMarkupLabel === "function";
+
+  if (coreOk) {
+    setJsStatus(true, calcOk ? "JS: OK" : "JS: OK (calc partial)");
+  } else {
     setJsStatus(false, "JS: missing");
-    toast("Wizard JS missing. Confirm /tools/filaments.js, /tools/logic.js, /tools/wiring.js load (not HTML).");
+    toast("Wizard JS missing. Confirm /tools/filaments.js, /tools/logic.js, /tools/wiring.js load as JS (not HTML).");
   }
 
-  // Safe binder (won’t crash if an element is missing)
+  // Safe binder
   const on = (id, ev, fn) => {
     const el = $(id);
     if (!el) return;
     el.addEventListener(ev, (e) => {
-      // Prevent any accidental form-submit behavior
       if (e && typeof e.preventDefault === "function") e.preventDefault();
       fn(e);
     });
   };
 
-  on("runBtn", "click", () => runWizard());
-  on("resetBtn", "click", () => resetWizard());
+  // Wizard actions
+  on("runBtn", "click", () => typeof runWizard === "function" && runWizard());
+  on("resetBtn", "click", () => typeof resetWizard === "function" && resetWizard());
+  on("openLibraryBtn", "click", () => typeof renderAllFilaments === "function" && renderAllFilaments());
 
-  on("viewTop3", "click", () => setViewMode("top3"));
-  on("viewAll", "click", () => setViewMode("all"));
+  // View mode
+  on("viewTop3", "click", () => typeof setViewMode === "function" && setViewMode("top3"));
+  on("viewAll", "click", () => typeof setViewMode === "function" && setViewMode("all"));
 
+  // Sort
   on("sortBy", "change", (e) => {
+    if (typeof sortBy === "undefined") return;
     sortBy = e.target.value;
     const results = $("results");
-    if (results && results.querySelector(".card-result")) rerenderCurrentResults();
+    if (typeof rerenderCurrentResults === "function" && results && results.querySelector(".card-result")) {
+      rerenderCurrentResults();
+    }
   });
 
   // Filters dropdown
@@ -72,7 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const filtersDropdown = $("filtersDropdown");
   const filterHideHard = $("filterHideHard");
   const clearFiltersBtn = $("clearFiltersBtn");
-
   let filtersOpen = false;
 
   if (filtersBtn && filtersDropdown) {
@@ -95,48 +108,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (filterHideHard) {
     filterHideHard.addEventListener("change", () => {
+      if (typeof hideHard === "undefined") return;
       hideHard = filterHideHard.checked;
-      updateFilterButtonState();
-      const results = $("results");
-      if (results && results.querySelector(".card-result")) rerenderCurrentResults();
-      else updateModeLine();
+      if (typeof updateFilterButtonState === "function") updateFilterButtonState();
+      if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
+      else if (typeof updateModeLine === "function") updateModeLine();
     });
   }
 
   document.querySelectorAll('input[name="printerFilter"]').forEach((radio) => {
     radio.addEventListener("change", () => {
       if (!radio.checked) return;
+      if (typeof printerFilter === "undefined") return;
       printerFilter = radio.value;
-      updateFilterButtonState();
-      const results = $("results");
-      if (results && results.querySelector(".card-result")) rerenderCurrentResults();
-      else updateModeLine();
+      if (typeof updateFilterButtonState === "function") updateFilterButtonState();
+      if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
+      else if (typeof updateModeLine === "function") updateModeLine();
     });
   });
 
   if (clearFiltersBtn) {
     clearFiltersBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      hideHard = false;
-      printerFilter = "any";
+      if (typeof hideHard !== "undefined") hideHard = false;
+      if (typeof printerFilter !== "undefined") printerFilter = "any";
       if (filterHideHard) filterHideHard.checked = false;
       document.querySelectorAll('input[name="printerFilter"]').forEach((r) => {
         if (r.value === "any") r.checked = true;
       });
-      updateFilterButtonState();
-      const results = $("results");
-      if (results && results.querySelector(".card-result")) rerenderCurrentResults();
-      else updateModeLine();
+      if (typeof updateFilterButtonState === "function") updateFilterButtonState();
+      if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
+      else if (typeof updateModeLine === "function") updateModeLine();
     });
   }
 
-  on("openLibraryBtn", "click", () => renderAllFilaments());
-
+  // Feedback
   on("feedbackBtn", "click", () => {
     window.location.href = "mailto:3dlabs.cm@gmail.com?subject=Filament%20Wizard%20Feedback";
   });
 
-  // Calculator navigation
+  // Calculator navigation (only if those sections exist)
   const mainApp = $("mainApp");
   const calculatorScreen = $("calculatorScreen");
 
@@ -152,25 +163,25 @@ document.addEventListener("DOMContentLoaded", () => {
     mainApp.classList.remove("hidden");
   });
 
-  // Calculator logic
-  on("calcRunBtn", "click", () => runCalculator());
-  on("calcResetBtn", "click", () => resetCalculator());
+  // Calculator actions (optional)
+  on("calcRunBtn", "click", () => typeof runCalculator === "function" && runCalculator());
+  on("calcResetBtn", "click", () => typeof resetCalculator === "function" && resetCalculator());
 
   on("markupSlider", "input", () => {
-    updateMarkupLabel();
-    runCalculator();
+    if (typeof updateMarkupLabel === "function") updateMarkupLabel();
+    if (typeof runCalculator === "function") runCalculator();
   });
 
   on("calcOpenLibraryBtn", "click", () => {
     if (!mainApp || !calculatorScreen) return;
     calculatorScreen.classList.add("hidden");
     mainApp.classList.remove("hidden");
-    renderAllFilaments();
+    if (typeof renderAllFilaments === "function") renderAllFilaments();
   });
 
-  // Init UI
-  updateMarkupLabel();
-  updateResultsCount(0);
-  updateFilterButtonState();
-  updateModeLine();
+  // Init UI (if present)
+  if (typeof updateMarkupLabel === "function") updateMarkupLabel();
+  if (typeof updateResultsCount === "function") updateResultsCount(0);
+  if (typeof updateFilterButtonState === "function") updateFilterButtonState();
+  if (typeof updateModeLine === "function") updateModeLine();
 });
