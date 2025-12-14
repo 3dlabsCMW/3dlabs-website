@@ -28,9 +28,104 @@
 
   <main class="page">
     <section class="panel wide">
-      <h1>Shop</h1>
-      <p>Featured products, Etsy listings, and popular print categories.</p>
+      <div class="section-title">
+        <h2>Shop</h2>
+        <p class="hint">Featured items (placeholders for now) — ready for Etsy embeds later.</p>
+      </div>
+      <p>
+        This layout is structured like a modern merch storefront: strong product tiles, clear pricing, fast CTAs.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="/contact.html">Custom order</a>
+        <a class="btn-ghost" href="/tools/filament-wizard.html">Material picker</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Featured</h2>
+        <p class="hint">Swap these tiles with your real products anytime.</p>
+      </div>
+
+      <div class="product-grid">
+        <article class="product-card">
+          <div class="product-thumb"></div>
+          <div class="product-body">
+            <div class="product-name">Desk Cable Clip Pack</div>
+            <div class="product-meta">Clean routing • multiple sizes • PETG/PLA options</div>
+            <div class="product-row">
+              <span class="price">$9.99</span>
+              <span class="badge accent">Best seller</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-thumb"></div>
+          <div class="product-body">
+            <div class="product-name">Controller / Headset Stand</div>
+            <div class="product-meta">Stable base • easy assembly • matte finish</div>
+            <div class="product-row">
+              <span class="price">$19.99</span>
+              <span class="badge">Popular</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-thumb"></div>
+          <div class="product-body">
+            <div class="product-name">Tool Wall Mount Set</div>
+            <div class="product-meta">Modular • strong • shop-ready</div>
+            <div class="product-row">
+              <span class="price">$14.99</span>
+              <span class="badge">Workshop</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-thumb"></div>
+          <div class="product-body">
+            <div class="product-name">Custom Functional Part</div>
+            <div class="product-meta">Designed for load/heat/UV • quoted per job</div>
+            <div class="product-row">
+              <span class="price">Quote</span>
+              <a class="btn btn-small" href="/contact.html">Request</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title">
+        <h2>Categories</h2>
+        <p class="hint">Quick navigation structure like a real store.</p>
+      </div>
+      <div class="grid-3">
+        <article class="panel">
+          <h3>Desk & Setup</h3>
+          <p>Stands, clips, mounts, organization.</p>
+          <a class="btn btn-small" href="/contact.html">Ask for options</a>
+        </article>
+        <article class="panel">
+          <h3>Workshop</h3>
+          <p>Tooling, storage, jigs, fixtures.</p>
+          <a class="btn btn-small" href="/contact.html">Get recommendations</a>
+        </article>
+        <article class="panel">
+          <h3>Custom</h3>
+          <p>Functional parts built around requirements.</p>
+          <a class="btn btn-small" href="/tools/filament-wizard.html">Start with filament</a>
+        </article>
+      </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <div>3DLabs • Shop</div>
+    <div>When you’re ready, we can swap the “Featured” grid with live Etsy listings or a product JSON feed.</div>
+  </footer>
 </body>
 </html>

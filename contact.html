@@ -28,9 +28,61 @@
 
   <main class="page">
     <section class="panel wide">
-      <h1>Contact</h1>
-      <p>Send dimensions, material preferences, and your use case.</p>
+      <div class="section-title">
+        <h2>Contact</h2>
+        <p class="hint">Quotes, custom orders, questions.</p>
+      </div>
+      <p>
+        If you already know the requirements, include them below (load, temp, UV, chemical exposure).
+        If not, start with Filament Wizard and paste the recommendation.
+      </p>
+      <div class="hero-actions">
+        <a class="btn-ghost" href="/tools/filament-wizard.html">Open Filament Wizard</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <form>
+        <div class="grid">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your name" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label for="material">Preferred filament</label>
+            <input id="material" type="text" placeholder="PLA / PETG / ABS / ASA / TPU / etc." />
+          </div>
+
+          <div class="field">
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" placeholder="1" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="details">Project details</label>
+          <textarea id="details" placeholder="Dimensions, use-case, tolerances, environment, finish expectations..."></textarea>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-primary" type="button">Submit (wire later)</button>
+          <a class="btn" href="mailto:hello@3dlabs.xyz">Email instead</a>
+        </div>
+      </form>
     </section>
   </main>
+
+  <footer class="footer">
+    <div>3DLabs • Contact</div>
+    <div>The “Submit” button is intentionally not wired until you choose email, Forms, or a backend.</div>
+  </footer>
 </body>
 </html>
