@@ -1,26 +1,2 @@
-# ==========================
-# 1) Never rewrite assets
-# ==========================
-/filaments.js              /filaments.js               200
-/logic.js                  /logic.js                   200
-/wiring.js                 /wiring.js                  200
-/styles.css                /styles.css                 200
-
-/*.js                      /:splat                     200
-/*.css                     /:splat                     200
-/*.png                     /:splat                     200
-/*.jpg                     /:splat                     200
-/*.jpeg                    /:splat                     200
-/*.webp                    /:splat                     200
-/*.svg                     /:splat                     200
-/*.ico                     /:splat                     200
-/*.json                    /:splat                     200
-/*.woff                    /:splat                     200
-/*.woff2                   /:splat                     200
-
-# ==========================
-# 2) Filament Wizard tool route
-# (no clean-URL rules for other pages)
-# ==========================
-/tools/filament-wizard      /filament-wizard.html      200
-/tools/filament-wizard/     /filament-wizard.html      200
+/tools/filament-wizard      /tools/filament-wizard.html  200
+/tools/filament-wizard/     /tools/filament-wizard.html  200

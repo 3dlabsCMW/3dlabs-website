@@ -38,7 +38,7 @@
           <p class="hero-subtitle">Use-case driven filament recommendations (strength, heat, UV, flexibility, etc.).</p>
         </div>
 
-        <!-- If this stays “JS: loading…”, your scripts are not running -->
+        <!-- If scripts load, wiring.js will flip this to JS: OK -->
         <div id="jsStatus" class="js-status js-status-warn">JS: loading…</div>
       </div>
     </section>
@@ -299,9 +299,9 @@
     <div id="toastText" class="toast-text"></div>
   </div>
 
-  <!-- IMPORTANT: defer makes load/execution consistent -->
-  <script src="/filaments.js" defer></script>
-  <script src="/logic.js" defer></script>
-  <script src="/wiring.js" defer></script>
+  <!-- IMPORTANT: these JS files are inside /tools, so use relative paths -->
+  <script src="./filaments.js" defer></script>
+  <script src="./logic.js" defer></script>
+  <script src="./wiring.js" defer></script>
 </body>
 </html>
