@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modeLine = $("resultsModeLine");
     const countEl = $("resultsCount");
     if (!modeLine || !countEl) return;
-
     if (modeLine.contains(countEl)) return;
 
     const wrap = document.createElement("span");
@@ -43,20 +42,21 @@ document.addEventListener("DOMContentLoaded", () => {
     mo.observe(modeLine, { childList: true, subtree: true, characterData: true });
   }
 
-  // ---------- Card Enhancements (no logic.js edits required) ----------
+  // ---------- Card Enhancements ----------
   function enhanceCard(card) {
     if (!card || card.dataset.enhanced === "1") return;
 
     const header = card.querySelector(".card-result-header");
     const score = card.querySelector(".card-result-score");
-    const body = card.querySelector(".card-result-body");
     const copyBtn = card.querySelector(".btn-copy-profile");
+
+    const body = card.querySelector(".card-result-body");
+
+    // These class names exist in your rendered cards (from logic.js)
     const profileTitle = card.querySelector(".profile-title");
     const profileList = card.querySelector(".profile-list");
 
-    if (body) body.classList.add("card-body-grid");
-
-    // 1) Move “Copy profile” under Score (vertical stack at top-right)
+    // 1) Score stack (Score + Copy below it) — no layout disruption
     if (header && score && copyBtn) {
       let stack = header.querySelector(".score-stack");
       if (!stack) {
@@ -64,25 +64,26 @@ document.addEventListener("DOMContentLoaded", () => {
         stack.className = "score-stack";
         header.appendChild(stack);
       }
-      // Ensure score is inside stack
       if (score.parentElement !== stack) stack.appendChild(score);
-      // Move copy under score
       stack.appendChild(copyBtn);
       copyBtn.classList.add("copy-under-score");
     }
 
-    // 2) Move Print profile into a dedicated right “green box” area
+    // 2) Floating print profile panel in dead space (no reflow)
+    //    We APPEND it at the end and let CSS position it absolutely.
     if (body && profileTitle && profileList) {
-      let side = body.querySelector(".profile-side");
-      if (!side) {
-        side = document.createElement("div");
-        side.className = "profile-side";
-        // place at the top of the body so it sits in the right column
-        body.insertBefore(side, body.firstChild);
+      let floatPanel = card.querySelector(".profile-float");
+      if (!floatPanel) {
+        floatPanel = document.createElement("div");
+        floatPanel.className = "profile-float";
+        card.appendChild(floatPanel);
       }
 
-      side.appendChild(profileTitle);
-      side.appendChild(profileList);
+      floatPanel.appendChild(profileTitle);
+      floatPanel.appendChild(profileList);
+
+      // Mark card so CSS can add right-padding to avoid overlap
+      card.classList.add("has-profile-float");
     }
 
     card.dataset.enhanced = "1";
@@ -92,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".card-result").forEach(enhanceCard);
   }
 
-  // Run now + whenever results rerender
   const results = $("results");
   if (results) {
     enhanceAllCards();
