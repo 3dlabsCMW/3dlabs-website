@@ -2,10 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const $ = (id) => document.getElementById(id);
 
   function setJsStatus(ok, msg) {
-    // If the element is missing, do nothing (no breaking).
     const el = $("jsStatus");
     if (!el) return;
-
     el.textContent = msg;
     el.classList.toggle("js-status-ok", !!ok);
     el.classList.toggle("js-status-warn", !ok);
@@ -20,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Surface JS errors so it never feels "dead"
+  // Make runtime errors visible (prevents “nothing happens” feeling)
   window.addEventListener("error", (e) => {
     setJsStatus(false, "JS: error");
     toast("JS error: " + (e?.message || "unknown"));
@@ -31,28 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
     toast("JS promise error: " + (e?.reason?.message || "unknown"));
   });
 
-  // --- Core function presence (keep this minimal)
-  // If buttons work, these must exist.
+  // ✅ Core check only (do not block OK for optional calculator helpers)
   const coreOk =
     typeof FILAMENTS !== "undefined" &&
     typeof runWizard === "function" &&
     typeof resetWizard === "function" &&
     typeof renderAllFilaments === "function";
 
-  // Optional features (do not block "OK" status)
-  const calcOk =
-    typeof runCalculator === "function" &&
-    typeof resetCalculator === "function" &&
-    typeof updateMarkupLabel === "function";
-
-  if (coreOk) {
-    setJsStatus(true, calcOk ? "JS: OK" : "JS: OK (calc partial)");
-  } else {
+  if (coreOk) setJsStatus(true, "JS: OK");
+  else {
     setJsStatus(false, "JS: missing");
-    toast("Wizard JS missing. Confirm /tools/filaments.js, /tools/logic.js, /tools/wiring.js load as JS (not HTML).");
+    toast("Wizard JS missing. Check that /tools/filaments.js, /tools/logic.js, /tools/wiring.js load as JS (not HTML).");
   }
 
-  // Safe binder
+  // --- Utility: safe event binding
   const on = (id, ev, fn) => {
     const el = $(id);
     if (!el) return;
@@ -62,30 +52,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Wizard actions
+  // --- Layout fix: move filament count next to “Filters applied”
+  // We do this by physically moving the DOM node (no logic.js changes required).
+  const modeLine = $("resultsModeLine");
+  const countEl = $("resultsCount");
+  if (modeLine && countEl && countEl.parentElement && modeLine.parentElement) {
+    // Create a wrapper span so it can be styled nicely
+    const wrap = document.createElement("span");
+    wrap.className = "inline-meta-count";
+    // Move the count element into the wrapper
+    wrap.appendChild(countEl);
+    // Add a divider spacing
+    modeLine.appendChild(document.createTextNode("  •  "));
+    modeLine.appendChild(wrap);
+  }
+
+  // --- Wizard actions
   on("runBtn", "click", () => typeof runWizard === "function" && runWizard());
   on("resetBtn", "click", () => typeof resetWizard === "function" && resetWizard());
   on("openLibraryBtn", "click", () => typeof renderAllFilaments === "function" && renderAllFilaments());
 
-  // View mode
+  // --- View mode buttons
   on("viewTop3", "click", () => typeof setViewMode === "function" && setViewMode("top3"));
   on("viewAll", "click", () => typeof setViewMode === "function" && setViewMode("all"));
 
-  // Sort
+  // --- Sort
   on("sortBy", "change", (e) => {
     if (typeof sortBy === "undefined") return;
     sortBy = e.target.value;
-    const results = $("results");
-    if (typeof rerenderCurrentResults === "function" && results && results.querySelector(".card-result")) {
-      rerenderCurrentResults();
-    }
+    if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
   });
 
-  // Filters dropdown
+  // --- Filters dropdown
   const filtersBtn = $("filtersBtn");
   const filtersDropdown = $("filtersDropdown");
   const filterHideHard = $("filterHideHard");
   const clearFiltersBtn = $("clearFiltersBtn");
+
   let filtersOpen = false;
 
   if (filtersBtn && filtersDropdown) {
@@ -142,12 +145,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Feedback
+  // --- Feedback
   on("feedbackBtn", "click", () => {
     window.location.href = "mailto:3dlabs.cm@gmail.com?subject=Filament%20Wizard%20Feedback";
   });
 
-  // Calculator navigation (only if those sections exist)
+  // --- Calculator navigation (if present)
   const mainApp = $("mainApp");
   const calculatorScreen = $("calculatorScreen");
 
@@ -163,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mainApp.classList.remove("hidden");
   });
 
-  // Calculator actions (optional)
+  // --- Calculator actions (optional)
   on("calcRunBtn", "click", () => typeof runCalculator === "function" && runCalculator());
   on("calcResetBtn", "click", () => typeof resetCalculator === "function" && resetCalculator());
 
@@ -181,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Init UI (if present)
   if (typeof updateMarkupLabel === "function") updateMarkupLabel();
-  if (typeof updateResultsCount === "function") updateResultsCount(0);
   if (typeof updateFilterButtonState === "function") updateFilterButtonState();
   if (typeof updateModeLine === "function") updateModeLine();
 });
