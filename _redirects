@@ -1,0 +1,16 @@
+# --- DO NOT rewrite static assets ---
+/filaments.js              /filaments.js               200
+/logic.js                  /logic.js                   200
+/wiring.js                 /wiring.js                  200
+/styles.css                /styles.css                 200
+
+# --- Filament Wizard routes ---
+/tools/filament-wizard           /filament-wizard.html 200
+/tools/filament-wizard/          /filament-wizard.html 200
+/tools/filament-wizard.html      /filament-wizard.html 200
+
+# --- Clean URLs ---
+/shop                      /shop.html                 200
+/gallery                   /gallery.html              200
+/social                    /social.html               200
+/contact                   /contact.html              200
