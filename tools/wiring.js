@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.classList.toggle("js-status-warn", !ok);
   }
 
-  // Core presence check (don’t block OK on optional helpers)
+  // Core presence check
   const coreOk =
     typeof FILAMENTS !== "undefined" &&
     typeof runWizard === "function" &&
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setJsStatus(coreOk, coreOk ? "JS: OK" : "JS: missing");
 
-  // ---------- Move resultsCount next to “Filters applied” (reliable) ----------
+  // ---------- Move resultsCount next to “Filters applied” ----------
   function moveCountInline() {
     const modeLine = $("resultsModeLine");
     const countEl = $("resultsCount");
@@ -49,28 +49,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const header = card.querySelector(".card-result-header");
     const score = card.querySelector(".card-result-score");
     const copyBtn = card.querySelector(".btn-copy-profile");
-
     const body = card.querySelector(".card-result-body");
-
-    // These class names exist in your rendered cards (from logic.js)
     const profileTitle = card.querySelector(".profile-title");
     const profileList = card.querySelector(".profile-list");
 
-    // 1) Score stack (Score + Copy below it) — no layout disruption
+    // 1) Force Score + Copy into a top-right stack
     if (header && score && copyBtn) {
-      let stack = header.querySelector(".score-stack");
+      let stack = card.querySelector(".score-stack");
       if (!stack) {
         stack = document.createElement("div");
         stack.className = "score-stack";
-        header.appendChild(stack);
+        card.appendChild(stack);
       }
-      if (score.parentElement !== stack) stack.appendChild(score);
+      stack.appendChild(score);
       stack.appendChild(copyBtn);
       copyBtn.classList.add("copy-under-score");
+      card.classList.add("has-score-stack");
     }
 
-    // 2) Floating print profile panel in dead space (no reflow)
-    //    We APPEND it at the end and let CSS position it absolutely.
+    // 2) Floating print profile panel (dead space)
     if (body && profileTitle && profileList) {
       let floatPanel = card.querySelector(".profile-float");
       if (!floatPanel) {
@@ -78,11 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
         floatPanel.className = "profile-float";
         card.appendChild(floatPanel);
       }
-
       floatPanel.appendChild(profileTitle);
       floatPanel.appendChild(profileList);
-
-      // Mark card so CSS can add right-padding to avoid overlap
       card.classList.add("has-profile-float");
     }
 
@@ -100,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ro.observe(results, { childList: true, subtree: true });
   }
 
-  // ---------- Existing bindings ----------
+  // ---------- Helpers ----------
   const on = (id, ev, fn) => {
     const el = $(id);
     if (!el) return;
@@ -123,27 +117,61 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
   });
 
-  // Filters dropdown
+  // ---------- Filters dropdown: FIXED POSITION so it never gets clipped ----------
   const filtersBtn = $("filtersBtn");
   const filtersDropdown = $("filtersDropdown");
   let filtersOpen = false;
 
+  function positionFiltersDropdown() {
+    if (!filtersBtn || !filtersDropdown) return;
+    const r = filtersBtn.getBoundingClientRect();
+    const width = filtersDropdown.offsetWidth || 280;
+
+    // Place below the button, right-aligned to it
+    filtersDropdown.style.position = "fixed";
+    filtersDropdown.style.top = `${Math.round(r.bottom + 10)}px`;
+    filtersDropdown.style.left = `${Math.round(r.right - width)}px`;
+    filtersDropdown.style.zIndex = "9999";
+  }
+
   if (filtersBtn && filtersDropdown) {
+    // Ensure it’s not trapped by any parent stacking context
+    document.body.appendChild(filtersDropdown);
+
     filtersBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
       filtersOpen = !filtersOpen;
-      filtersDropdown.classList.toggle("show", filtersOpen);
+
+      if (filtersOpen) {
+        filtersDropdown.classList.add("show");
+        // Wait a tick so width is measurable
+        requestAnimationFrame(() => {
+          positionFiltersDropdown();
+        });
+      } else {
+        filtersDropdown.classList.remove("show");
+      }
     });
+
     filtersDropdown.addEventListener("click", (e) => e.stopPropagation());
+
     document.addEventListener("click", () => {
       if (filtersOpen) {
         filtersOpen = false;
         filtersDropdown.classList.remove("show");
       }
     });
+
+    window.addEventListener("resize", () => {
+      if (filtersOpen) positionFiltersDropdown();
+    });
+    window.addEventListener("scroll", () => {
+      if (filtersOpen) positionFiltersDropdown();
+    }, { passive: true });
   }
 
+  // Keep existing filter logic
   const filterHideHard = $("filterHideHard");
   if (filterHideHard) {
     filterHideHard.addEventListener("change", () => {
