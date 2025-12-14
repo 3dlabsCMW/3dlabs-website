@@ -17,11 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setJsStatus(coreOk, coreOk ? "JS: OK" : "JS: missing");
 
-  // Move resultsCount inline next to "Filters applied"
+  // Move resultsCount inline next to "Filters applied" (keeps the count visible)
   function moveCountInline() {
     const modeLine = $("resultsModeLine");
     const countEl = $("resultsCount");
     if (!modeLine || !countEl) return;
+
+    // If modeLine is empty, ensure it still exists visually
+    if (!modeLine.textContent || !modeLine.textContent.trim()) {
+      // leave as-is; logic.js will usually populate it
+    }
+
     if (modeLine.contains(countEl)) return;
 
     const wrap = document.createElement("span");
@@ -33,35 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     modeLine.appendChild(wrap);
   }
-  moveCountInline();
 
+  moveCountInline();
   const modeLine = $("resultsModeLine");
   if (modeLine) {
     const mo = new MutationObserver(() => moveCountInline());
     mo.observe(modeLine, { childList: true, subtree: true, characterData: true });
   }
-
-  // Remove the header line that starts with "Part:"
-  function hidePartLine() {
-    const right = document.querySelector(".wizard-right");
-    const results = $("results");
-    if (!right) return;
-
-    // Only search in the header area (exclude actual result cards container)
-    const searchRoot = right.cloneNode(false);
-    // safer approach: query candidate lines near the header
-    const candidates = right.querySelectorAll("p, div, span");
-    candidates.forEach((el) => {
-      if (!el || !el.textContent) return;
-      if (results && results.contains(el)) return; // don't touch cards
-
-      const t = el.textContent.trim();
-      if (t.startsWith("Part:")) {
-        el.style.display = "none";
-      }
-    });
-  }
-  hidePartLine();
 
   // Enhance filament cards (score/copy pinned, profile float)
   function enhanceCard(card) {
@@ -108,10 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const results = $("results");
   if (results) {
     enhanceAllCards();
-    const ro = new MutationObserver(() => {
-      enhanceAllCards();
-      hidePartLine();
-    });
+    const ro = new MutationObserver(() => enhanceAllCards());
     ro.observe(results, { childList: true, subtree: true });
   }
 
@@ -137,6 +118,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
   });
 
+  // Dedicated calculator page (new)
+  on("openCalculatorBtn", "click", () => {
+    window.location.href = "/tools/pricing-calculator.html";
+  });
+
+  // Optional: feedback route (keeps existing button working)
+  on("feedbackBtn", "click", () => {
+    window.location.href = "/contact.html";
+  });
+
   // Filters dropdown: fixed + appended to body so it never clips
   const filtersBtn = $("filtersBtn");
   const filtersDropdown = $("filtersDropdown");
@@ -146,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!filtersBtn || !filtersDropdown) return;
     const r = filtersBtn.getBoundingClientRect();
     const width = filtersDropdown.offsetWidth || 280;
+
     filtersDropdown.style.position = "fixed";
     filtersDropdown.style.top = `${Math.round(r.bottom + 10)}px`;
     filtersDropdown.style.left = `${Math.round(r.right - width)}px`;
@@ -159,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       e.stopPropagation();
       filtersOpen = !filtersOpen;
+
       if (filtersOpen) {
         filtersDropdown.classList.add("show");
         requestAnimationFrame(() => positionFiltersDropdown());
@@ -179,6 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", () => {
       if (filtersOpen) positionFiltersDropdown();
     });
+
     window.addEventListener(
       "scroll",
       () => {
@@ -215,9 +209,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof hideHard !== "undefined") hideHard = false;
     if (typeof printerFilter !== "undefined") printerFilter = "any";
     if (filterHideHard) filterHideHard.checked = false;
+
     document.querySelectorAll('input[name="printerFilter"]').forEach((r) => {
       if (r.value === "any") r.checked = true;
     });
+
     if (typeof updateFilterButtonState === "function") updateFilterButtonState();
     if (typeof rerenderCurrentResults === "function") rerenderCurrentResults();
     else if (typeof updateModeLine === "function") updateModeLine();

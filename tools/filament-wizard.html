@@ -9,48 +9,46 @@
 
 <body>
   <header class="top-bar">
-    <div class="top-bar-inner">
-      <div class="top-bar-left">
-        <div class="logo-circle">3D</div>
-        <div class="brand-text">
-          <span class="brand-name">3DLabs</span>
-          <span class="brand-subtitle">Filament Wizard</span>
-        </div>
-      </div>
-
-      <div class="top-bar-right top-nav">
-        <a class="nav-link" href="/index.html">Home</a>
-        <a class="nav-link" href="/shop.html">Shop</a>
-        <a class="nav-link" href="/gallery.html">Gallery</a>
-        <a class="nav-link" href="/social.html">Social</a>
-        <a class="nav-link" href="/contact.html">Contact</a>
-        <a class="nav-link nav-active nav-cta" href="/tools/filament-wizard.html">Filament Wizard</a>
+  <div class="top-bar-inner">
+    <div class="top-bar-left">
+      <div class="logo-circle">3D</div>
+      <div class="brand-text">
+        <span class="brand-name">3DLabs</span>
+        <span class="brand-subtitle">Filament Wizard</span>
       </div>
     </div>
-  </header>
+
+    <div class="top-bar-right top-nav">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/shop.html">Shop</a>
+      <a class="nav-link" href="/gallery.html">Gallery</a>
+      <a class="nav-link" href="/social.html">Social</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+      <a class="nav-link nav-cta" href="/tools.html">Tools</a>
+    </div>
+  </div>
+</header>
 
   <main class="page tool-page">
-    <section class="hero-card tool-hero">
-      <div class="hero-eyebrow">FILAMENT WIZARD</div>
 
+    <section class="hero-card">
       <div class="hero-row">
         <div>
+          <div class="hero-eyebrow">FILAMENT WIZARD</div>
           <h1>Filament Wizard</h1>
-          <p class="hero-subtitle">
-            Use-case driven filament recommendations (strength, heat, UV, flexibility, etc.).
-          </p>
+          <p class="hero-subtitle">Use-case driven filament recommendations (strength, heat, UV, flexibility, etc.).</p>
         </div>
-
-        <!-- JS status pill (wiring.js will flip this to OK when loaded) -->
         <div id="jsStatus" class="js-status js-status-warn">JS: loading…</div>
       </div>
     </section>
 
-    <!-- MAIN APP -->
-    <section id="mainApp" class="card tool-card">
-      <div class="wizard-shell wizard-shell-xl">
-        <!-- LEFT: Inputs -->
+    <section class="card">
+
+      <div class="wizard-shell">
+
+        <!-- LEFT: INPUTS -->
         <div class="wizard-left">
+
           <div class="wizard-title">Your part</div>
 
           <div class="field">
@@ -137,35 +135,31 @@
 
           <div class="field">
             <label for="notes">Notes (optional)</label>
-            <textarea id="notes" rows="3" placeholder="Printer, part constraints, finish, budget, etc."></textarea>
+            <textarea id="notes" rows="4" placeholder="Printer, part constraints, finish, budget, etc."></textarea>
           </div>
 
           <div class="button-row">
-            <button id="runBtn" class="btn-primary" type="button">Find filaments</button>
-            <button id="resetBtn" class="btn-ghost" type="button">Reset</button>
-          </div>
-
-          <div class="button-row">
-            <button id="openLibraryBtn" class="btn-ghost" type="button">View all filaments</button>
-          </div>
-
-          <div class="button-row">
-            <button id="openCalculatorBtn" class="btn-ghost" type="button">Pricing calculator</button>
-            <button id="feedbackBtn" class="btn-ghost" type="button">Feedback</button>
+            <button id="runBtn" class="btn-primary">Find filaments</button>
+            <button id="resetBtn" class="btn-ghost">Reset</button>
+            <button id="openLibraryBtn" class="btn-ghost">View all filaments</button>
+            <button id="openCalculatorBtn" class="btn-ghost">Pricing calculator</button>
+            <button id="feedbackBtn" class="btn-ghost">Feedback</button>
           </div>
 
           <div class="view-mode">
             <div class="view-label">View</div>
             <div class="chip-row">
-              <button id="viewTop3" class="chip chip-active" type="button">Top 3</button>
-              <button id="viewAll" class="chip" type="button">All matches</button>
+              <button id="viewTop3" class="chip chip-active">Top 3</button>
+              <button id="viewAll" class="chip">All matches</button>
             </div>
           </div>
+
         </div>
 
-        <!-- RIGHT: Results -->
+        <!-- RIGHT: RESULTS -->
         <div class="wizard-right">
-          <div class="results-header results-header-sticky">
+
+          <div class="results-header">
             <div class="results-header-left">
               <div id="resultsTitle" class="results-title">Recommendations</div>
               <div id="subtitle" class="results-subtitle">
@@ -175,50 +169,48 @@
             </div>
 
             <div class="results-header-right">
-              <div class="actions-row">
-                <div class="sort-wrap">
-                  <label class="sort-label" for="sortBy">Sort</label>
-                  <select id="sortBy" class="btn-like-select" aria-label="Sort">
-                    <option value="score">Best match</option>
-                    <option value="price_asc">Price (low → high)</option>
-                    <option value="price_desc">Price (high → low)</option>
-                    <option value="tox_asc">Toxicity (low → high)</option>
-                    <option value="tox_desc">Toxicity (high → low)</option>
-                  </select>
-                </div>
+              <div class="sort-wrap">
+                <label class="sort-label" for="sortBy">Sort</label>
+                <select id="sortBy" class="sort-select">
+                  <option value="score">Best match</option>
+                  <option value="price_asc">Price (low → high)</option>
+                  <option value="price_desc">Price (high → low)</option>
+                  <option value="tox_asc">Toxicity (low → high)</option>
+                  <option value="tox_desc">Toxicity (high → low)</option>
+                </select>
+              </div>
 
-                <div class="filters-wrap">
-                  <button id="filtersBtn" class="btn-ghost btn-compact" type="button">
-                    <span id="filtersBtnLabel">Filters</span>
-                  </button>
+              <div class="filters-wrap">
+                <button id="filtersBtn" class="btn-ghost filters-btn">
+                  <span id="filtersBtnLabel">Filters</span>
+                </button>
 
-                  <div id="filtersDropdown" class="filters-dropdown">
-                    <div class="filters-title">Filters</div>
+                <div id="filtersDropdown" class="filters-dropdown">
+                  <div class="filters-title">Filters</div>
 
-                    <label class="checkbox-row">
-                      <input id="filterHideHard" type="checkbox" />
-                      <span>Hide hard/extreme materials</span>
+                  <label class="checkbox-row">
+                    <input id="filterHideHard" type="checkbox" />
+                    <span>Hide hard/extreme materials</span>
+                  </label>
+
+                  <div class="radio-block">
+                    <div class="radio-title">Printer</div>
+                    <label class="radio-row">
+                      <input type="radio" name="printerFilter" value="any" checked />
+                      <span>Any printer</span>
                     </label>
+                    <label class="radio-row">
+                      <input type="radio" name="printerFilter" value="open_only" />
+                      <span>Open-frame only</span>
+                    </label>
+                    <label class="radio-row">
+                      <input type="radio" name="printerFilter" value="enclosed_only" />
+                      <span>Enclosed recommended</span>
+                    </label>
+                  </div>
 
-                    <div class="radio-block">
-                      <div class="radio-title">Printer</div>
-                      <label class="radio-row">
-                        <input type="radio" name="printerFilter" value="any" checked />
-                        <span>Any printer</span>
-                      </label>
-                      <label class="radio-row">
-                        <input type="radio" name="printerFilter" value="open_only" />
-                        <span>Open-frame only</span>
-                      </label>
-                      <label class="radio-row">
-                        <input type="radio" name="printerFilter" value="enclosed_only" />
-                        <span>Enclosed recommended</span>
-                      </label>
-                    </div>
-
-                    <div class="filters-actions">
-                      <button id="clearFiltersBtn" class="btn-ghost btn-compact" type="button">Clear filters</button>
-                    </div>
+                  <div class="filters-actions">
+                    <button id="clearFiltersBtn" class="btn-ghost">Clear filters</button>
                   </div>
                 </div>
               </div>
@@ -228,119 +220,17 @@
           </div>
 
           <div id="resultsQuickHints" class="results-hints"></div>
+          <div id="results" class="results-grid"></div>
 
-          <div id="results" class="results-grid results-grid-xl">
-            <div class="result-empty">
-              No results yet.<br /><br />
-              Tell the wizard about your part and click <b>Find filaments</b> to see recommendations.
-            </div>
-          </div>
         </div>
       </div>
+
     </section>
 
-    <!-- CALCULATOR SCREEN -->
-    <section id="calculatorScreen" class="card hidden tool-card">
-      <div class="calc-header">
-        <div>
-          <div class="calc-title">Pricing calculator</div>
-          <div class="calc-subtitle">Estimate base cost + markup for a print.</div>
-        </div>
-        <div class="calc-header-actions">
-          <button id="calcOpenLibraryBtn" class="btn-ghost btn-compact" type="button">View all filaments</button>
-          <button id="calculatorBackBtn" class="btn-ghost btn-compact" type="button">Back to wizard</button>
-        </div>
-      </div>
-
-      <div class="calc-grid">
-        <div class="calc-panel">
-          <div class="calc-panel-title">Inputs</div>
-
-          <div class="calc-field">
-            <label for="calcFilamentGrams">Filament used (g)</label>
-            <input id="calcFilamentGrams" type="number" step="0.1" />
-          </div>
-
-          <div class="calc-field">
-            <label for="calcSpoolGrams">Spool size (g)</label>
-            <input id="calcSpoolGrams" type="number" step="1" placeholder="1000" />
-          </div>
-
-          <div class="calc-field">
-            <label for="calcSpoolCost">Spool cost ($)</label>
-            <input id="calcSpoolCost" type="number" step="0.01" />
-          </div>
-
-          <div class="calc-field">
-            <label for="calcPowerCostPerHour">Power cost per hour ($)</label>
-            <input id="calcPowerCostPerHour" type="number" step="0.01" placeholder="optional" />
-          </div>
-
-          <div class="calc-field two-col">
-            <div>
-              <label for="calcPrintHours">Print time (hours)</label>
-              <input id="calcPrintHours" type="number" step="1" />
-            </div>
-            <div>
-              <label for="calcPrintMinutes">Print time (minutes)</label>
-              <input id="calcPrintMinutes" type="number" step="1" />
-            </div>
-          </div>
-
-          <div class="calc-field">
-            <label for="calcLaborRate">Labour rate ($/hr)</label>
-            <input id="calcLaborRate" type="number" step="0.01" placeholder="optional" />
-          </div>
-
-          <div class="calc-field two-col">
-            <div>
-              <label for="calcLaborHours">Labour (hours)</label>
-              <input id="calcLaborHours" type="number" step="1" />
-            </div>
-            <div>
-              <label for="calcLaborMinutes">Labour (minutes)</label>
-              <input id="calcLaborMinutes" type="number" step="1" />
-            </div>
-          </div>
-
-          <div class="calc-field">
-            <label for="calcOtherCosts">Other costs ($)</label>
-            <input id="calcOtherCosts" type="number" step="0.01" placeholder="shipping, packaging, etc." />
-          </div>
-
-          <div class="calc-field">
-            <label>Markup: <span id="markupValueLabel">0%</span></label>
-            <input id="markupSlider" type="range" min="0" max="500" value="0" />
-          </div>
-
-          <div class="button-row">
-            <button id="calcRunBtn" class="btn-primary" type="button">Calculate</button>
-            <button id="calcResetBtn" class="btn-ghost" type="button">Reset</button>
-          </div>
-        </div>
-
-        <div class="calc-panel">
-          <div class="calc-panel-title">Summary</div>
-          <div id="calcSummary" class="calc-summary">
-            Enter values above and hit <b>Calculate</b>.
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  <footer class="footer tool-footer">
-    <div>3DLabs • Filament Wizard</div>
-  </footer>
-
-  <!-- Toast (used by showToast()) -->
-  <div id="toast" class="toast">
-    <div id="toastText" class="toast-text"></div>
-  </div>
-
-  <!-- IMPORTANT: scripts live in /tools, so load them from THIS folder -->
-  <script src="./filaments.js" defer></script>
-  <script src="./logic.js" defer></script>
-  <script src="./wiring.js" defer></script>
+  <script src="/tools/filaments.js"></script>
+  <script src="/tools/logic.js"></script>
+  <script src="/tools/wiring.js"></script>
 </body>
 </html>
