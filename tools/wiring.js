@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.classList.toggle("js-status-warn", !ok);
   }
 
+  // Core presence check (don’t block OK on optional helpers)
   const coreOk =
     typeof FILAMENTS !== "undefined" &&
     typeof runWizard === "function" &&
@@ -17,28 +18,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setJsStatus(coreOk, coreOk ? "JS: OK" : "JS: missing");
 
-  // Move “resultsCount” beside “filters applied” every time mode line updates.
-  // This avoids timing issues where logic.js writes mode-line after our initial move.
+  // ---------- Move resultsCount next to “Filters applied” (reliable) ----------
   function moveCountInline() {
     const modeLine = $("resultsModeLine");
     const countEl = $("resultsCount");
     if (!modeLine || !countEl) return;
 
-    // If it's already inside modeLine, do nothing
     if (modeLine.contains(countEl)) return;
 
     const wrap = document.createElement("span");
     wrap.className = "inline-meta-count";
     wrap.appendChild(countEl);
 
-    // Add a separator if modeLine has text
     if (modeLine.textContent && modeLine.textContent.trim().length) {
       modeLine.appendChild(document.createTextNode("  •  "));
     }
     modeLine.appendChild(wrap);
   }
 
-  // Run now + also observe future changes
   moveCountInline();
   const modeLine = $("resultsModeLine");
   if (modeLine) {
@@ -46,6 +43,64 @@ document.addEventListener("DOMContentLoaded", () => {
     mo.observe(modeLine, { childList: true, subtree: true, characterData: true });
   }
 
+  // ---------- Card Enhancements (no logic.js edits required) ----------
+  function enhanceCard(card) {
+    if (!card || card.dataset.enhanced === "1") return;
+
+    const header = card.querySelector(".card-result-header");
+    const score = card.querySelector(".card-result-score");
+    const body = card.querySelector(".card-result-body");
+    const copyBtn = card.querySelector(".btn-copy-profile");
+    const profileTitle = card.querySelector(".profile-title");
+    const profileList = card.querySelector(".profile-list");
+
+    if (body) body.classList.add("card-body-grid");
+
+    // 1) Move “Copy profile” under Score (vertical stack at top-right)
+    if (header && score && copyBtn) {
+      let stack = header.querySelector(".score-stack");
+      if (!stack) {
+        stack = document.createElement("div");
+        stack.className = "score-stack";
+        header.appendChild(stack);
+      }
+      // Ensure score is inside stack
+      if (score.parentElement !== stack) stack.appendChild(score);
+      // Move copy under score
+      stack.appendChild(copyBtn);
+      copyBtn.classList.add("copy-under-score");
+    }
+
+    // 2) Move Print profile into a dedicated right “green box” area
+    if (body && profileTitle && profileList) {
+      let side = body.querySelector(".profile-side");
+      if (!side) {
+        side = document.createElement("div");
+        side.className = "profile-side";
+        // place at the top of the body so it sits in the right column
+        body.insertBefore(side, body.firstChild);
+      }
+
+      side.appendChild(profileTitle);
+      side.appendChild(profileList);
+    }
+
+    card.dataset.enhanced = "1";
+  }
+
+  function enhanceAllCards() {
+    document.querySelectorAll(".card-result").forEach(enhanceCard);
+  }
+
+  // Run now + whenever results rerender
+  const results = $("results");
+  if (results) {
+    enhanceAllCards();
+    const ro = new MutationObserver(() => enhanceAllCards());
+    ro.observe(results, { childList: true, subtree: true });
+  }
+
+  // ---------- Existing bindings ----------
   const on = (id, ev, fn) => {
     const el = $(id);
     if (!el) return;
@@ -89,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Keep existing filter logic (only if those globals exist)
   const filterHideHard = $("filterHideHard");
   if (filterHideHard) {
     filterHideHard.addEventListener("change", () => {
