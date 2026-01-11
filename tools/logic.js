@@ -1,4 +1,10 @@
 const DIFF_RANK = { easy: 1, medium: 2, hard: 3, extreme: 4 };
+const ICONS = {
+  category: "/assets/icons/Colour%20Swatch.jpg",
+  copy: "/assets/icons/Copy_To_Clipboard.png",
+  info: "/assets/icons/Info.png",
+  warning: "/assets/icons/Warning.png"
+};
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 let viewMode = "top3"; // "top3" | "all"
@@ -13,6 +19,14 @@ function getDifficultyBadgeClass(diff) {
   if (diff === "hard") return "badge-difficulty-hard";
   if (diff === "extreme") return "badge-difficulty-extreme";
   return "";
+}
+
+function difficultyIconSrc(diff) {
+  if (diff === "easy") return "/assets/icons/Easy.PNG";
+  if (diff === "medium") return "/assets/icons/Medium.PNG";
+  if (diff === "hard") return "/assets/icons/Hard.PNG";
+  if (diff === "extreme") return "/assets/icons/Extreme.PNG";
+  return ICONS.info;
 }
 
 function getCategoryBadgeClass(cat) {
@@ -509,6 +523,8 @@ function renderWizardResults(scored, req) {
     const priceText = (typeof f.pricePerKg === "number")
       ? `~$${f.pricePerKg.toFixed(0)}/kg (est.)`
       : "N/A";
+    const categoryIcon = ICONS.category;
+    const difficultyIcon = difficultyIconSrc(f.difficulty);
 
     card.innerHTML = `
       <div class="card-result-header">
@@ -521,10 +537,12 @@ function renderWizardResults(scored, req) {
 
       <div class="badge-row">
         <div class="badge ${categoryBadgeClass}">
-          <span class="icon">🏷️</span><span>${f.category}</span>
+          <span class="icon"><img src="${categoryIcon}" alt="" aria-hidden="true" /></span>
+          <span>${f.category}</span>
         </div>
         <div class="badge ${difficultyBadgeClass}">
-          <span class="icon">🎯</span><span>${f.difficulty}</span>
+          <span class="icon"><img src="${difficultyIcon}" alt="" aria-hidden="true" /></span>
+          <span>${f.difficulty}</span>
         </div>
         <div class="${enclosurePillClass(f)}" title="Based on typical warping and fume behavior. Enclosures help with demanding materials.">
           <span>🏠</span><span>${enclosurePillLabel(f)}</span>
@@ -554,7 +572,10 @@ function renderWizardResults(scored, req) {
           <li>Speed: ${f.speed}</li>
           <li>Adhesion: ${f.adhesion}</li>
         </ul>
-        <button class="btn-copy-profile">📋 Copy profile</button>
+        <button class="btn-copy-profile">
+          <img class="btn-icon" src="${ICONS.copy}" alt="" aria-hidden="true" />
+          Copy profile
+        </button>
       </div>
     `;
 
@@ -599,7 +620,10 @@ function renderAllFilaments() {
   const hints = document.getElementById("resultsQuickHints");
   if (hints) {
     hints.innerHTML = `
-      <div class="chip chip-ghost"><span>ℹ️</span><span>Filters and Sort By apply to this list too</span></div>
+      <div class="chip chip-ghost">
+        <span class="hint-icon"><img src="${ICONS.info}" alt="" aria-hidden="true" /></span>
+        <span>Filters and Sort By apply to this list too</span>
+      </div>
     `;
   }
 
@@ -633,6 +657,8 @@ function renderAllFilaments() {
     const priceText = (typeof f.pricePerKg === "number")
       ? `~$${f.pricePerKg.toFixed(0)}/kg (est.)`
       : "N/A";
+    const categoryIcon = ICONS.category;
+    const difficultyIcon = difficultyIconSrc(f.difficulty);
 
     card.innerHTML = `
       <div class="card-result-header">
@@ -644,10 +670,12 @@ function renderAllFilaments() {
 
       <div class="badge-row">
         <div class="badge ${categoryBadgeClass}">
-          <span class="icon">🏷️</span><span>${f.category}</span>
+          <span class="icon"><img src="${categoryIcon}" alt="" aria-hidden="true" /></span>
+          <span>${f.category}</span>
         </div>
         <div class="badge ${difficultyBadgeClass}">
-          <span class="icon">🎯</span><span>${f.difficulty}</span>
+          <span class="icon"><img src="${difficultyIcon}" alt="" aria-hidden="true" /></span>
+          <span>${f.difficulty}</span>
         </div>
         <div class="${enclosurePillClass(f)}" title="Based on typical warping and fume behavior. Enclosures help with demanding materials.">
           <span>🏠</span><span>${enclosurePillLabel(f)}</span>
@@ -668,7 +696,10 @@ function renderAllFilaments() {
           <li>Speed: ${f.speed}</li>
           <li>Adhesion: ${f.adhesion}</li>
         </ul>
-        <button class="btn-copy-profile">📋 Copy profile</button>
+        <button class="btn-copy-profile">
+          <img class="btn-icon" src="${ICONS.copy}" alt="" aria-hidden="true" />
+          Copy profile
+        </button>
       </div>
     `;
 
@@ -743,16 +774,20 @@ function runWizard() {
   if (hints) {
     hints.innerHTML = `
       <div class="chip chip-ghost">
-        <span>🎨</span><span>Decorative → PLA / PLA+</span>
+        <span class="hint-icon"><img src="${ICONS.category}" alt="" aria-hidden="true" /></span>
+        <span>Decorative → PLA / PLA+</span>
       </div>
       <div class="chip chip-ghost">
-        <span>🛠️</span><span>Mechanical → PETG / ASA</span>
+        <span class="hint-icon"><img src="/assets/icons/Hard.PNG" alt="" aria-hidden="true" /></span>
+        <span>Mechanical → PETG / ASA</span>
       </div>
       <div class="chip chip-ghost">
-        <span>🌤️</span><span>Outdoor → ASA / PETG</span>
+        <span class="hint-icon"><img src="${ICONS.warning}" alt="" aria-hidden="true" /></span>
+        <span>Outdoor → ASA / PETG</span>
       </div>
       <div class="chip chip-ghost">
-        <span>🔥</span><span>High heat → ASA / PC / Nylon</span>
+        <span class="hint-icon"><img src="/assets/icons/Extreme.PNG" alt="" aria-hidden="true" /></span>
+        <span>High heat → ASA / PC / Nylon</span>
       </div>
     `;
   }
@@ -801,16 +836,20 @@ function resetWizard() {
   if (hints) {
     hints.innerHTML = `
       <div class="chip chip-ghost">
-        <span>🎨</span><span>Decorative → PLA / PLA+</span>
+        <span class="hint-icon"><img src="${ICONS.category}" alt="" aria-hidden="true" /></span>
+        <span>Decorative → PLA / PLA+</span>
       </div>
       <div class="chip chip-ghost">
-        <span>🛠️</span><span>Mechanical → PETG / ASA</span>
+        <span class="hint-icon"><img src="/assets/icons/Hard.PNG" alt="" aria-hidden="true" /></span>
+        <span>Mechanical → PETG / ASA</span>
       </div>
       <div class="chip chip-ghost">
-        <span>🌤️</span><span>Outdoor → ASA / PETG</span>
+        <span class="hint-icon"><img src="${ICONS.warning}" alt="" aria-hidden="true" /></span>
+        <span>Outdoor → ASA / PETG</span>
       </div>
       <div class="chip chip-ghost">
-        <span>🔥</span><span>High heat → ASA / PC / Nylon</span>
+        <span class="hint-icon"><img src="/assets/icons/Extreme.PNG" alt="" aria-hidden="true" /></span>
+        <span>High heat → ASA / PC / Nylon</span>
       </div>
     `;
   }
