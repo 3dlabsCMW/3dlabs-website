@@ -753,8 +753,6 @@ select option{background:#0f1624;color:#f1f5f9}
   object-position:center;
   display:block;
   filter:drop-shadow(0 14px 24px rgba(0,0,0,.55));
-  padding:8px 0;
-  box-sizing:border-box;
 }
 .tool-body{
   padding:14px;
