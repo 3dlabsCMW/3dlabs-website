@@ -750,6 +750,7 @@ select option{background:#0f1624;color:#f1f5f9}
   width:100%;
   height:100%;
   object-fit:contain;
+  object-position:center;
   display:block;
   filter:drop-shadow(0 14px 24px rgba(0,0,0,.55));
   padding:8px 0;
