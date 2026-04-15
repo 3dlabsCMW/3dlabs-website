@@ -1,0 +1,5 @@
+node_modules/
+3dlabs-app/node_modules/
+3dlabs-app/.expo/
+3dlabs-app/.env
+npm-debug.log*
